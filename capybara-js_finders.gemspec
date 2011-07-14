@@ -32,5 +32,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "capybara", "~> 1.0.0"
-  s.add_development_dependency "rake"
+  s.add_development_dependency "rake", "~> 0.9.0"
+  s.add_development_dependency "rdoc", ">= 2.4.2"
+  s.add_development_dependency "sinatra", "~> 1.2.6"
+  s.add_development_dependency "erubis", "~> 2.6.6"
+  s.add_development_dependency "bbq", "~> 0.0.3"
 end

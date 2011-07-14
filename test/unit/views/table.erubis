@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <script type="text/javascript" src="public/js/prototype.js"></script>
+  </head>
+
+  <body>
+    <table cellpadding="15" cellspacing="15" border="2">
+      <tr>
+        <td>
+          *
+        </td>
+
+        <td>
+          OneColumn
+        </td>
+
+        <td colspan="2">
+          TwoColumns
+        </td>
+
+        <td colspan="3">
+          ThreeColumns
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          OneRow
+        </td>
+
+        <td style="background-color: red;">
+          red
+        </td>
+
+        <td colspan="2" style="background-color: blue;">
+          hor
+        </td>
+
+        <td style="background-color: CadetBlue;">
+          CadetBlue
+        </td>
+        <td style="background-color: Chocolate;">
+          Chocolate
+        </td>
+        <td style="background-color: DarkGoldenRod;">
+          DarkGoldenRod
+        </td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">
+          TwoRows
+        </td>
+
+        <td rowspan="2" style="background-color: Wheat ;">
+          ver
+        </td>
+
+        <td colspan="2" rowspan="2" style="background-color: YellowGreen ;">
+          sqr
+        </td>
+
+        <td style="background-color: Sienna ;">
+          Sienna
+        </td>
+
+        <td style="background-color: Silver ;">
+          Silver
+        </td>
+        <td style="background-color: Snow ;">
+          Snow
+        </td>
+      </tr>
+
+      <tr>
+        <td style="background-color: Tan;">
+          Tan
+        </td>
+        <td style="background-color: Teal ;">
+          Teal
+        </td>
+        <td style="background-color: Tomato ;">
+          Tomato
+        </td>
+      </tr>
+
+      <tr>
+        <td rowspan="3">
+          ThreeRows
+        </td>
+
+        <td style="background-color: Crimson ;">
+          Crimson
+        </td>
+        <td style="background-color: DarkGray ;">
+          DarkGray
+        </td>
+        <td style="background-color: DarkKhaki ;">
+          DarkKhaki
+        </td>
+        <td style="background-color: DarkMagenta ;">
+          DarkMagenta
+        </td>
+        <td style="background-color: DarkOliveGreen ;">
+          DarkOliveGreen
+        </td>
+        <td style="background-color: Darkorange ;">
+          Darkorange
+        </td>
+      </tr>
+
+      <tr>
+        <td style="background-color: DarkSalmon ;">
+          DarkSalmon
+        </td>
+        <td style="background-color: DarkSeaGreen;">
+          DarkSeaGreen
+        </td>
+        <td style="background-color: DeepPink ;">
+          DeepPink
+        </td>
+
+        <td style="background-color: Gold ;">
+          Gold
+        </td>
+        <td style="background-color: Green ;">
+          Green
+        </td>
+        <td style="background-color: Lavender ;">
+          Lavender
+        </td>
+      </tr>
+
+      <tr>
+        <td style="background-color: MediumAquaMarine ;">
+          MediumAquaMarine
+        </td>
+        <td style="background-color: Maroon ;">
+          Maroon
+        </td>
+        <td style="background-color: NavajoWhite ;">
+          NavajoWhite
+        </td>
+
+        <td style="background-color: Orchid ;">
+          Orchid
+        </td>
+        <td style="background-color: Peru ;">
+          Peru
+        </td>
+        <td style="background-color: SandyBrown ;">
+          SandyBrown
+        </td>
+      </tr>
+
+    </table>
+
+  </body>
+
+</html>
