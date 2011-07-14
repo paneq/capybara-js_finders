@@ -40,3 +40,8 @@ namespace :find_cell_tests do
     FindCellTests::App.run!
   end
 end
+
+task :readme do
+  #require 'redcloth'
+  `redcarpet README.md > README.test.html`
+end
