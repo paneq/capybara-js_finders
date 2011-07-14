@@ -12,11 +12,16 @@ Gem::Specification.new do |s|
   s.description = <<-DESC
     Additional finders for capybara that for some reason
     cannot use only xpath for finding nodes but needs to
-    execute js for some calculations. Ex: I you want to find a cell
+    execute js for some calculations.
+
+    Ex: I you want to find a table cell
     that is under or next to other cell the easiest way to do it is to
     check their position on page and compare them. This way you do not
-    need to wory about calculating the effects of using colspan and rowspan.
-    The downside is that you need to use capybara driver that runs a browser like selenium.
+    need to wory about calculating the effects of using colspan 
+    and rowspan attributes.
+
+    The downside is that you need to use capybara driver that runs
+    a browser like selenium.
   DESC
 
   s.rubyforge_project = "capybara-js_finders"
@@ -25,4 +30,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_dependency "capybara", "~> 1.0.0"
+  s.add_development_dependency "rake"
 end
