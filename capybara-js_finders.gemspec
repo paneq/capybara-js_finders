@@ -5,11 +5,19 @@ require "capybara-js_finders/version"
 Gem::Specification.new do |s|
   s.name        = "capybara-js_finders"
   s.version     = Capybara::JsFinders::VERSION
-  s.authors     = ["Robert Pankowecki (Gavdi)"]
-  s.email       = ["rpa@gavdi.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Robert Pankowecki"]
+  s.email       = %w(robert.pankowecki@gmail.com rpa@gavdi.com)
+  s.homepage    = "https://github.com/paneq/capybara-js_finders"
+  s.summary     = %q{Additional finders for capybara that for some reason cannot use only xpath for finding nodes but needs to execute js for some calculations}
+  s.description = <<-DESC
+    Additional finders for capybara that for some reason
+    cannot use only xpath for finding nodes but needs to
+    execute js for some calculations. Ex: I you want to find a cell
+    that is under or next to other cell the easiest way to do it is to
+    check their position on page and compare them. This way you do not
+    need to wory about calculating the effects of using colspan and rowspan.
+    The downside is that you need to use capybara driver that runs a browser like selenium.
+  DESC
 
   s.rubyforge_project = "capybara-js_finders"
 
