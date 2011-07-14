@@ -76,7 +76,7 @@ module Capybara
       columns = Array.wrap(columns)
 
       execute_script(SCRIPT)
-      xpath = FindCell.cell_condition(columns, options[:row])
+      xpath = JsFinders.cell_condition(columns, options[:row])
       xpath = ".//td[ #{xpath} ]"
       #puts xpath
       find(:xpath, xpath, options)

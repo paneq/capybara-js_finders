@@ -1,6 +1,6 @@
 <html>
   <head>
-    <script type="text/javascript" src="public/js/prototype.js"></script>
+    <script type="text/javascript" src="js/prototype.js"></script>
   </head>
 
   <body>
@@ -73,7 +73,7 @@
       </tr>
 
       <tr>
-        <td style="background-color: Tan;">
+        <td style="background-color: Tan;" rowspan="2">
           Tan
         </td>
         <td style="background-color: Teal ;">
@@ -98,9 +98,6 @@
         <td style="background-color: DarkKhaki ;">
           DarkKhaki
         </td>
-        <td style="background-color: DarkMagenta ;">
-          DarkMagenta
-        </td>
         <td style="background-color: DarkOliveGreen ;">
           DarkOliveGreen
         </td>
@@ -116,12 +113,8 @@
         <td style="background-color: DarkSeaGreen;">
           DarkSeaGreen
         </td>
-        <td style="background-color: DeepPink ;">
+        <td style="background-color: DeepPink ;" colspan="2">
           DeepPink
-        </td>
-
-        <td style="background-color: Gold ;">
-          Gold
         </td>
         <td style="background-color: Green ;">
           Green
