@@ -37,4 +37,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sinatra", "~> 1.2.6"
   s.add_development_dependency "erubis", "~> 2.6.6"
   s.add_development_dependency "bbq", "~> 0.0.3"
+  s.add_development_dependency "ruby-debug19"
 end

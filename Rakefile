@@ -7,6 +7,8 @@ end
 
 Bundler::GemHelper.install_tasks
 require 'rdoc/task'
+require 'rake/testtask'
+require 'rake'
 
 RDoc::Task.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
@@ -15,8 +17,6 @@ RDoc::Task.new do |rdoc|
   rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
-
-require 'rake/testtask'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
@@ -27,3 +27,16 @@ end
 
 
 task :default => :test
+
+task :script do
+  require "capybara-js_finders"
+  puts Capybara::JsFinders::SCRIPT
+end
+
+namespace :find_cell_tests do
+  task :app do
+    $LOAD_PATH << './test'
+    require 'unit/find_cell_tests/app/app'
+    FindCellTests::App.run!
+  end
+end

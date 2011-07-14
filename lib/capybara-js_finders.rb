@@ -7,8 +7,10 @@ module Capybara
 
     extend XPath
 
-    LR = "lr".freeze
-    RR = "rr".freeze
+    LR = "lr".freeze # Left range
+    RR = "rr".freeze # Right range
+    TR = "tr".freeze # Top range
+    BR = "br".freeze # Bottom range
 
     # TODO: This script is only prototype compatibile. Let it discover jquery or prototype and use proper methods.
     SCRIPT = <<-JS
@@ -19,10 +21,15 @@ module Capybara
       ary.push(td);
     }
     ary.each(function(ele){
-      var sp = ele.cumulativeOffset().left;
-      var sps = sp + ele.getWidth();
-      ele.setAttribute('lr', sp);
-      ele.setAttribute('rr', sps);
+      var offset = ele.cumulativeOffset();
+      var lr = offset.left;
+      var rr = lr + ele.getWidth();
+      var tr = offset.top;
+      var br = tr + ele.getHeight();
+      ele.setAttribute('#{LR}', lr);
+      ele.setAttribute('#{RR}', rr);
+      ele.setAttribute('#{TR}', tr);
+      ele.setAttribute('#{BR}', br);
     });
     JS
     SCRIPT.freeze
@@ -34,19 +41,32 @@ module Capybara
     end
 
     def self.overlaps_column(column)
-      overlaps(column[LR], column[RR])
+      overlaps_horizontal(column[LR], column[RR])
     end
 
-    # crl, crr - Column left and right range
-    def self.overlaps(clr, crr)
-      "(./@rr >= #{clr} and ./@lr <= #{crr})"
+    # clr, crr - Column left and right range
+    def self.overlaps_horizontal(clr, crr)
+      "(./@#{RR} >= #{clr} and ./@#{LR} <= #{crr})"
     end
 
-    # Condition for td to be under one of columna and in row with given text
-    # This does not work with rowspan!
-    def self.cell_condition(columns, father_row_text)
-      row_xpath = father(:tr)[ string.n.is(father_row_text) ].to_s
-      xpath = "( #{row_xpath} ) and ( #{overlaps_columns(columns)} ) "
+    def self.overlaps_rows(rows)
+      rows_xpath = rows.map{|row| overlaps_row(row) }.join(" or ")
+      rows_xpath = "( #{rows_xpath} )"
+      return rows_xpath
+    end
+
+    def self.overlaps_row(row)
+      overlaps_vertical(row[TR], row[BR])
+    end
+
+    # rtr, rbr - row top and bottom range
+    def self.overlaps_vertical(rtr, rbr)
+      "(./@#{BR} >= #{rtr} and ./@#{TR} <= #{rbr})"
+    end
+
+    # Condition for td to be under one of column and on the same level as one of the rows
+    def self.cell_condition(columns, rows)
+      xpath = "( #{overlaps_rows(rows)} ) and ( #{overlaps_columns(columns)} ) "
       return xpath
     end
 
@@ -61,6 +81,7 @@ module Capybara
     # :with
     def find_cell(options = {})
       # TODO: Jak pierwszy arg to string to wywolaj cell zamiast tego
+
       raise ArgumentError unless options[:column]
       columns = case options[:column]
       when String
@@ -75,8 +96,22 @@ module Capybara
       end
       columns = Array.wrap(columns)
 
+      raise ArgumentError unless options[:row]
+      rows = case options[:row]
+      when String
+        method = options[:multirow] ? :all : :find
+        send(method, :xpath, XPath::HTML.cell(options[:row]) ) # TODO: jak all to musi byc conajmniej 1
+      when Capybara::Node::Element
+        options[:row]
+      when Array
+        options[:row].each{|x| raise ArgumentError unless x.is_a?(Capybara::Node::Element) }
+      else
+        raise ArgumentError
+      end
+      rows = Array.wrap(rows)
+
       execute_script(SCRIPT)
-      xpath = JsFinders.cell_condition(columns, options[:row])
+      xpath = JsFinders.cell_condition(columns, rows)
       xpath = ".//td[ #{xpath} ]"
       #puts xpath
       find(:xpath, xpath, options)
