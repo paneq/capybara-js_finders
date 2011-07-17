@@ -1,7 +1,7 @@
 # Capybara JS Finders
 
 Capybara JS Finders is a set of additional finders for capybara. Currently it only contains cell finder which allows
-you to find a table cell based on cell and row descriptions.
+you to find a table cell based on column and row descriptions.
 
 ## Installation
 
@@ -17,7 +17,7 @@ Allows you to find table cell (td, th) based on cell and row descriptions.
 The method is colspan and rowspan attribute-aware which means it will be able to find
 a cell even if it is under collspaned th containing a description.
 
-h4. Example
+#### Example
 
     <table>
       <tr>
