@@ -22,15 +22,19 @@ module Capybara
       ary.push(td);
     }
     ary.each(function(ele){
-      var offset = ele.cumulativeOffset();
-      var lr = offset.left;
-      var rr = lr + ele.getWidth();
-      var tr = offset.top;
-      var br = tr + ele.getHeight();
-      ele.setAttribute('#{LR}', lr);
-      ele.setAttribute('#{RR}', rr);
-      ele.setAttribute('#{TR}', tr);
-      ele.setAttribute('#{BR}', br);
+      try{
+        var offset = ele.cumulativeOffset();
+        var lr = offset.left;
+        var rr = lr + ele.getWidth();
+        var tr = offset.top;
+        var br = tr + ele.getHeight();
+        ele.setAttribute('#{LR}', lr);
+        ele.setAttribute('#{RR}', rr);
+        ele.setAttribute('#{TR}', tr);
+        ele.setAttribute('#{BR}', br);
+      } catch(err){
+        /* ele.getWidth() and ele.getHeight() sometimes raises an exception, just skip ele in such case, there is nothing we can do about it! */
+      }
     });
     JS
     SCRIPT.freeze
