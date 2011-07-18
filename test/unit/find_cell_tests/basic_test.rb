@@ -5,19 +5,21 @@ module FindCellTests
   
   class BasicTest < Bbq::TestCase
 
+    attr_reader :user
+
     setup do
       Capybara.app = App
+      Capybara.default_wait_time = 0.1
+      @user = Bbq::TestUser.new(:driver => :selenium, :session_name => :default)
     end
 
     def test_respond_to
-      user = Bbq::TestUser.new(:driver => :selenium, :session_name => :default)
       user.visit '/'
       assert user.find('table').respond_to?(:find_cell)
       assert user.respond_to?(:find_cell)
     end
 
     def test_find_cell
-      user = Bbq::TestUser.new(:driver => :selenium, :session_name => :default)
       user.visit '/'
 
       # First row
@@ -29,7 +31,6 @@ module FindCellTests
 
       assert user.find_cell(:row => "OneRow", :column => "ThreeColumns").has_content?("CadetBlue")
       assert user.find_cell(:row => "OneRow", :column => "ThreeColumns", :text => "Chocolate").has_content?("Chocolate")
-      # TODO: Find multiple cells matching without text
 
       # Second row
       assert user.find_cell(:row => "TwoRows", :column => "OneColumn").has_content?("ver")
@@ -42,12 +43,46 @@ module FindCellTests
       assert user.find_cell(:row => "TwoRows", :column => "ThreeColumns", :text => "Tan").has_content?("Tan")
       assert user.find_cell(:row => "TwoRows", :column => "ThreeColumns", :text => "Tomato").has_content?("Tomato")
 
+      # Third row
+      assert user.find_cell(:row => "ThreeRows", :column => "OneColumn").has_content?("Crimson")
+      assert user.find_cell(:row => "ThreeRows", :column => "OneColumn", :text => "DarkSalmon").has_content?("DarkSalmon")
+
+      assert user.find_cell(:row => "ThreeRows", :column => "TwoColumns").has_content?("DarkGray")
+      assert user.find_cell(:row => "ThreeRows", :column => "TwoColumns", :text => "NavajoWhite").has_content?("NavajoWhite")
+      assert user.find_cell(:row => "ThreeRows", :column => "TwoColumns", :text => "DeepPink").has_content?("DeepPink")
+
+      assert user.find_cell(:row => "ThreeRows", :column => "ThreeColumns").has_content?("Tan")
+      assert user.find_cell(:row => "ThreeRows", :column => "ThreeColumns", :text => "Green").has_content?("Green")
+      assert user.find_cell(:row => "ThreeRows", :column => "ThreeColumns", :text => "SandyBrown").has_content?("SandyBrown")
+      assert user.find_cell(:row => "ThreeRows", :column => "ThreeColumns", :text => "DeepPink").has_content?("DeepPink")
+      assert user.find_cell(:row => "ThreeRows", :column => "ThreeColumns", :text => "Tan").has_content?("Tan")
 
       # Test matching multiple rows and columns
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Row", :column => "Column").has_content?("red")
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Rows", :column => "Columns").has_content?("sqr")
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Rows", :column => "Columns", :text => "Tan").has_content?("Tan")
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Rows", :column => "Columns", :text => "DeepPink").has_content?("DeepPink")
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Rows", :column => "Columns", :text => "Peru").has_content?("Peru")
+      assert user.find_cell(:multicolumn => true, :multirow => true, :row => "Rows", :column => "Columns", :text => "Snow").has_content?("Snow")
     end
 
-    #  def test_find_cell_not_found
-    #
-    #  end
+    def test_find_cell_not_found
+      assert_not_found{ user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "hor") }
+      assert_not_found{ user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "ver") }
+
+      assert_not_found{ user.find_cell(:row => "ThreeRows", :column => "OneColumn", :text => "DeepPink") }
+      assert_not_found{ user.find_cell(:row => "OneRow", :column => "ThreeColumns", :text => "Tan") }
+      assert_not_found{ user.find_cell(:multicolumn => false, :multirow => true,  :row => "Rows", :column => "Columns", :text => "SandyBrown") }
+      assert_not_found{ user.find_cell(:multicolumn => true,  :multirow => false, :row => "Rows", :column => "Columns", :text => "SandyBrown") }
+    end
+
+
+    private
+
+
+    def assert_not_found(&block)
+      assert_raise(Capybara::ElementNotFound, &block)
+    end
+
   end
 end
