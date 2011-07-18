@@ -8,7 +8,7 @@ you to find a table cell based on column and row descriptions.
 Simply add it to your Gemfile and bundle it up:
 
 ```ruby
-gem 'capybara-js_finders', '~> 0.0.1'
+gem 'capybara-js_finders', '~> 0.2.1'
 gem 'capybara'
 ```
 
