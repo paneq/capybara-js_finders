@@ -11,6 +11,7 @@ module Capybara
     RR = "rr".freeze # Right range
     TR = "tr".freeze # Top range
     BR = "br".freeze # Bottom range
+    XpathTrue = "(1=1)"
 
     # TODO: This script is only prototype compatibile. Let it discover jquery or prototype and use proper methods.
     SCRIPT = <<-JS
@@ -35,6 +36,7 @@ module Capybara
     SCRIPT.freeze
 
     def self.overlaps_columns(columns)
+      return XpathTrue if columns.first == true
       columns_xpath = columns.map{|column| overlaps_column(column) }.join(" or ")
       columns_xpath = "( #{columns_xpath} )"
       return columns_xpath
@@ -50,6 +52,7 @@ module Capybara
     end
 
     def self.overlaps_rows(rows)
+      return XpathTrue if rows.first == true
       rows_xpath = rows.map{|row| overlaps_row(row) }.join(" or ")
       rows_xpath = "( #{rows_xpath} )"
       return rows_xpath
@@ -71,18 +74,19 @@ module Capybara
     end
 
     # :column - text which should appear in the table column, or td/th Capybara::Node::Element object [or Array of them]
-    #           representing the columns which narrow the search area of the table.
-    # :row - text which should appear in the row of the table, (TODO: tr Capybara::Node::Element object [or Array of them])
-    # :cell - text which should appear in the column (TODO: Implement it!)
-    # :multicolumn - set to true if finding column by test should return multiple results instead of just one
+    #           representing the columns which narrow the search area of the table. Nil is allowed.
     #
-    # :text
+    # :row - text which should appear in the row of the table, or td/th Capybara::Node::Element object [or Array of them]
+    #           representing the columns which narrow the search area of the table. Nil is allowed.
+    # :text - text which should appear in the cell
+    # :multicolumn - set to true if finding column by test should return multiple results instead of just one
+    # :multirow - set to true if finding rows by test should return multiple results instead of just one
+    #
     # :visible
     # :with
     def find_cell(options = {})
       # TODO: Jak pierwszy arg to string to wywolaj cell zamiast tego
 
-      raise ArgumentError unless options[:column]
       columns = case options[:column]
       when String
         method = options[:multicolumn] ? :all : :find
@@ -91,12 +95,13 @@ module Capybara
         options[:column]
       when Array
         options[:column].each{|x| raise ArgumentError unless x.is_a?(Capybara::Node::Element) }
+      when NilClass
+        true
       else
         raise ArgumentError
       end
       columns = Array.wrap(columns)
 
-      raise ArgumentError unless options[:row]
       rows = case options[:row]
       when String
         method = options[:multirow] ? :all : :find
@@ -105,6 +110,8 @@ module Capybara
         options[:row]
       when Array
         options[:row].each{|x| raise ArgumentError unless x.is_a?(Capybara::Node::Element) }
+      when NilClass
+        true
       else
         raise ArgumentError
       end

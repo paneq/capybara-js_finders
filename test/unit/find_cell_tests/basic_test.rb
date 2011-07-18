@@ -76,6 +76,11 @@ module FindCellTests
       assert_not_found{ user.find_cell(:multicolumn => true,  :multirow => false, :row => "Rows", :column => "Columns", :text => "SandyBrown") }
     end
 
+    def test_find_cell_without_row_or_column
+      assert user.find_cell(:row => "OneRow", :text => "red").has_content?("red")
+      assert user.find_cell(:column => "OneColumn", :text => "red").has_content?("red")
+    end
+
 
     private
 
