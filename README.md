@@ -40,27 +40,27 @@ a cell even if it is under collspaned th containing a description.
       </tr>
 
       <tr>
-        <th>
+        <td>
           John Smith
-        </th>
-        <th>
+        </td>
+        <td>
           john@example.org
-        </th>
-        <th>
+        </td>
+        <td>
           Admin
-        </th>
+        </td>
       </tr>
 
       <tr>
-        <th>
+        <td>
           Andrew Bon
-        </th>
-        <th>
+        </td>
+        <td>
           andrew@example.org
-        </th>
-        <th>
+        </td>
+        <td>
           Moderator
-        </th>
+        </td>
       </tr>
 
     </table>
@@ -78,7 +78,7 @@ assert find_cell(:row => "John Smith", :column => "January", :text => "28").has_
 
 #### Multicolumn and multirows support
 
-If there are many rows and/or columns matching :row and/or :column parameter you can wider the search to include all of them
+If there are many rows and/or columns matching `:row` and/or `:column` parameter you can wider the search to include all of them
 by using `:multirow` and/or `:multicolumn` action.
 
 ##### Example
@@ -97,27 +97,27 @@ by using `:multirow` and/or `:multicolumn` action.
       </tr>
 
       <tr>
-        <th>
+        <td>
           John Smith
-        </th>
-        <th>
+        </td>
+        <td>
           john@example.org
-        </th>
-        <th>
+        </td>
+        <td>
           Admin
-        </th>
+        </td>
       </tr>
 
       <tr>
-        <th>
+        <td>
           John Smith
-        </th>
-        <th>
+        </td>
+        <td>
           smith@example.org
-        </th>
-        <th>
+        </td>
+        <td>
           Moderator
-        </th>
+        </td>
       </tr>
 
     </table>
