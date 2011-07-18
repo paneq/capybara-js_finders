@@ -5,7 +5,14 @@ you to find a table cell based on column and row descriptions.
 
 ## Installation
 
-TODO!
+Simply add it to your Gemfile and bundle it up:
+
+```ruby
+gem 'capybara-js_finders', '~> 0.0.1'
+gem 'capybara'
+```
+
+Make sure to add it before `capybara` in your Gemfile!
 
 ## API
 
@@ -66,7 +73,58 @@ assert find_cell(:row => "Andrew Bon", :column => "Email").has_no_content?("john
 #### Example
 
 ```ruby
-assert find_cell(:row => "John Smith", :column => "January", :text => "28" ).has_text?("Present at work")
+assert find_cell(:row => "John Smith", :column => "January", :text => "28").has_text?("Present at work")
+```
+
+#### Multicolumn and multirows support
+
+If there are many rows and/or columns matching :row and/or :column parameter you can wider the search to include all of them
+by using `:multirow` and/or `:multicolumn` action.
+
+##### Example
+
+    <table>
+      <tr>
+        <th>
+          User
+        </th>
+        <th>
+          Email
+        </th>
+        <th>
+          Permissions
+        </th>
+      </tr>
+
+      <tr>
+        <th>
+          John Smith
+        </th>
+        <th>
+          john@example.org
+        </th>
+        <th>
+          Admin
+        </th>
+      </tr>
+
+      <tr>
+        <th>
+          John Smith
+        </th>
+        <th>
+          smith@example.org
+        </th>
+        <th>
+          Moderator
+        </th>
+      </tr>
+
+    </table>
+
+```ruby
+find_cell(:row => "John Smith", :column => "Permissions", :text => "Moderator") # raises an exception
+find_cell(:multirow => true, :row => "John Smith", :column => "Permissions", :text => "Moderator") # will find the proper cell
 ```
 
 ## License
