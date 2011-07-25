@@ -13,29 +13,34 @@ module Capybara
     BR = "br".freeze # Bottom range
     XpathTrue = "(1=1)"
 
-    # TODO: This script is only prototype compatibile. Let it discover jquery or prototype and use proper methods.
+    # TODO: This script is only prototype compatible. Let it discover jquery or prototype and use proper methods.
+    # 
+    # If element left offset is 5 and element width is 10 then it cannot occupy pixels from 5 to 15 because that would give us 11px width.
+    # Element must occupy pixels from 6 to 15 or from 5 to 14 (including).
+    #
+    # I assume that the former answer is correct.
+    # Element starts on 6th pixel and that's why offset is equal to 5. TODO: Make sure there is test for that!
+    #
     SCRIPT = <<-JS
-    xpathResult = document.evaluate( "#{descendant(:th, :td)}", document, null, XPathResult.ANY_TYPE, null);
-    var ary = [];
-    var td;
-    while( td = xpathResult.iterateNext() ){
-      ary.push(td);
-    }
-    ary.each(function(ele){
-      try{
-        var offset = ele.cumulativeOffset();
-        var lr = offset.left;
-        var rr = lr + ele.getWidth();
-        var tr = offset.top;
-        var br = tr + ele.getHeight();
-        ele.setAttribute('#{LR}', lr);
-        ele.setAttribute('#{RR}', rr);
-        ele.setAttribute('#{TR}', tr);
-        ele.setAttribute('#{BR}', br);
-      } catch(err){
-        /* ele.getWidth() and ele.getHeight() sometimes raises an exception, just skip ele in such case, there is nothing we can do about it! */
+      xpathResult = document.evaluate( "#{descendant(:th, :td)}", document, null, XPathResult.ANY_TYPE, null);
+      var ary = [];
+      var td;
+      while( td = xpathResult.iterateNext() ){
+        ary.push(td);
       }
-    });
+      ary.each(function(ele){
+        try{
+          var dimensions = ele.getDimensions();
+          var offset = ele.cumulativeOffset();
+
+          ele.setAttribute('#{LR}', offset.left + 1);
+          ele.setAttribute('#{RR}', offset.left + dimensions.width);
+          ele.setAttribute('#{TR}', offset.top  + 1);
+          ele.setAttribute('#{BR}', offset.top  + dimensions.height);
+        } catch(err){
+          /* ele.getDimensions() sometimes raises an exception, just skip ele in such case, there is nothing we can do about it! */
+        }
+      });
     JS
     SCRIPT.freeze
 
@@ -124,7 +129,7 @@ module Capybara
       execute_script(SCRIPT)
       xpath = JsFinders.cell_condition(columns, rows)
       xpath = ".//td[ #{xpath} ]"
-      #puts xpath
+      # puts xpath
       find(:xpath, xpath, options)
     end
   end
