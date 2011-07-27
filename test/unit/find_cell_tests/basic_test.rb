@@ -67,6 +67,7 @@ module FindCellTests
     end
 
     def test_find_cell_not_found
+      user.visit '/'
       assert_not_found{ user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "hor") }
       assert_not_found{ user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "ver") }
 
@@ -77,10 +78,20 @@ module FindCellTests
     end
 
     def test_find_cell_without_row_or_column
+      user.visit '/'
       assert user.find_cell(:row => "OneRow", :text => "red").has_content?("red")
       assert user.find_cell(:column => "OneColumn", :text => "red").has_content?("red")
     end
 
+    def test_does_not_find_row_header_as_a_cell
+      user.visit '/'
+      assert ! user.find_cell(:row => "January 2012", :text => "12").has_content?("January")
+    end
+
+    def test_does_not_find_column_header_as_a_cell
+      user.visit '/'
+      assert ! user.find_cell(:column => "March 2013", :text => "13").has_content?("March")
+    end
 
     private
 
