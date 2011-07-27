@@ -76,9 +76,16 @@ module Capybara
       "(./@#{BR} >= #{rtr} and ./@#{TR} <= #{rbr})"
     end
 
+    def self.not_equal_to(headers)
+      headers.reject{|h| h == true}.map do |h|
+        "( ./@#{TR} != #{h[TR]} or ./@#{BR} != #{h[BR]} or ./@#{LR} != #{h[LR]} or ./@#{RR} != #{h[RR]} )"
+      end.join(" and ")
+    end
+
     # Condition for td to be under one of column and on the same level as one of the rows
+    # and cannot be the same cell as one of the row-header or column-header
     def self.cell_condition(columns, rows)
-      xpath = "( #{overlaps_rows(rows)} ) and ( #{overlaps_columns(columns)} ) "
+      xpath = "( #{overlaps_rows(rows)} ) and ( #{overlaps_columns(columns)} ) and (#{not_equal_to(columns + rows)})"
       return xpath
     end
 
