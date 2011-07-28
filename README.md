@@ -132,7 +132,7 @@ find_cell(:multirow => true, :row => "John Smith", :column => "Permissions", :te
 Current implementation calculates the position of every th or td element on a page.
 This might be slow especially when there are many such elements on the page. You if you have multiple
 subsequent `find_cell` invocations and you know that the page does not change between them
-you might use `static_page(&page)` method to improve the overall performance. Only first
+you might use `static_page(&block)` method to improve the overall performance. Only first
 call to `find_cell` will calculate cells' positions and the following checks will
 reuse those values.
 
