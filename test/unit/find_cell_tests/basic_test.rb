@@ -99,6 +99,7 @@ module FindCellTests
       red = user.find(:xpath, XPath::HTML.cell("red").to_s )
       attributes = [Capybara::JsFinders::LR, Capybara::JsFinders::RR, Capybara::JsFinders::TR, Capybara::JsFinders::BR]
       attributes.each {|attr| assert_nil red[attr]}
+      positions = nil
 
       user.static_page do
         user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red")
@@ -107,7 +108,7 @@ module FindCellTests
           red[attr]
         end
 
-        user.click_link("Hide me!") # Changes positions of elements
+        user.click_link("Hide me") # Changes positions of elements
 
         user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red") # Find the cell but without recalculating positions because we are inside static_page block
         assert_equal positions, attributes.map{|attr| red[attr] } # Attributes store the same positions as after first find_cell call
