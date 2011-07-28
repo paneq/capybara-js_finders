@@ -103,7 +103,7 @@ module FindCellTests
       user.static_page do
         user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red")
         positions = attributes.map do |attr|
-          assert red2[attr]
+          assert red[attr]
           red[attr]
         end
 
