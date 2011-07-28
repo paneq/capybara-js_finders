@@ -93,6 +93,30 @@ module FindCellTests
       assert ! user.find_cell(:column => "March 2013", :text => "13").has_content?("March")
     end
 
+    def test_assume_static_page
+      user.visit '/'
+
+      red = user.find(:xpath, XPath::HTML.cell("red").to_s )
+      attributes = [Capybara::JsFinders::LR, Capybara::JsFinders::RR, Capybara::JsFinders::TR, Capybara::JsFinders::BR]
+      attributes.each {|attr| assert_nil red[attr]}
+
+      user.static_page do
+        user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red")
+        positions = attributes.map do |attr|
+          assert red2[attr]
+          red[attr]
+        end
+
+        user.click_link("Hide me!") # Changes positions of elements
+
+        user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red") # Find the cell but without recalculating positions because we are inside static_page block
+        assert_equal positions, attributes.map{|attr| red[attr] } # Attributes store the same positions as after first find_cell call
+      end
+
+      user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red") # Find the cell but recalculates positions because we are outside of static_page block
+      assert_not_equal positions, attributes.map{|attr| red[attr] } # Attributes store different positions than after first find_cell call
+    end
+
     private
 
 
