@@ -134,15 +134,24 @@ module Capybara
       end
       rows = Array.wrap(rows)
 
-      execute_script(SCRIPT)
+      if @static_page
+        execute_script(SCRIPT) unless @executed
+        @executed = true
+      else
+        execute_script(SCRIPT)
+      end
       xpath = JsFinders.cell_condition(columns, rows)
-      xpath = ".//td[ #{xpath} ]"
+      xpath = ".//td[ #{xpath} ]" # TODO: td or th ?
       # puts xpath
       find(:xpath, xpath, options)
     end
 
     def static_page(&block)
-      block.call
+      @static_page = true
+      return block.call
+    ensure
+      @executed = false
+      @static_page = false
     end
 
   end
