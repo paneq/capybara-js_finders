@@ -116,8 +116,15 @@ module FindCellTests
 
       user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red") # Find the cell but recalculates positions because we are outside of static_page block
       assert_not_equal positions, attributes.map{|attr| red[attr] } # Attributes store different positions than after first find_cell call
+
+      user.visit '/'
+      user.static_page do # Make sure that another use of static_page again recalculates positions for first find_cell query
+        red = user.find_cell(:row => "OneRow", :column => "OneColumn", :text => "red")
+        attributes.map { |attr| assert red[attr] }
+      end
     end
 
+    
     private
 
 
