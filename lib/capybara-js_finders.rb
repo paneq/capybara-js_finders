@@ -12,6 +12,7 @@ module Capybara
     TR = "tr".freeze # Top range
     BR = "br".freeze # Bottom range
     XpathTrue = "(1=1)"
+    NEW_METHODS = [:find_cell, :static_page].freeze
 
     # TODO: This script is only prototype compatible. Let it discover jquery or prototype and use proper methods.
     # 
@@ -139,7 +140,13 @@ module Capybara
       # puts xpath
       find(:xpath, xpath, options)
     end
+
+    def static_page(&block)
+      block.call
+    end
+
   end
+
 end
 
 require "capybara-js_finders/capybara_extensions"
