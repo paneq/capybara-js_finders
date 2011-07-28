@@ -76,7 +76,7 @@ assert find_cell(:row => "Andrew Bon", :column => "Email").has_no_content?("john
 assert find_cell(:row => "John Smith", :column => "January", :text => "28").has_text?("Present at work")
 ```
 
-#### Multicolumn and multirows support
+#### Multicolumn and multirow support
 
 If there are many rows and/or columns matching `:row` and/or `:column` parameter you can wider the search to include all of them
 by using `:multirow` and/or `:multicolumn` action.
@@ -125,6 +125,39 @@ by using `:multirow` and/or `:multicolumn` action.
 ```ruby
 find_cell(:row => "John Smith", :column => "Permissions", :text => "Moderator") # raises an exception
 find_cell(:multirow => true, :row => "John Smith", :column => "Permissions", :text => "Moderator") # will find the proper cell
+```
+
+#### Performance
+
+Current implementation calculates the position of every th or td element on a page.
+This might be slow especially when there are many such elements on the page. You if you have multiple
+subsequent `find_cell` invocations and you know that the page does not change between them
+you might use `static_page(&page)` method to improve the overall performance. Only first
+call to `find_cell` will calculate cells' positions and the following checks will
+reuse those values.
+
+##### Example:
+
+```ruby
+
+click_link("Permissions")
+
+static_page do
+  find_cell(:row => "John Smith", :column => "Permissions") # execute JS to calculate elements' positions
+  find_cell(:row => "Andrew Bon", :column => "Email")       # JS is not executed
+end
+
+click_link("Posts")
+
+static_page do
+  find_cell(:row => "Ruby is Awesome", :column => "Published at")       # execute JS to calculate elements' positions
+  find_cell(:row => "And CoffeScript too", :column => "Published at")   # JS is not executed
+end
+
+click_link("Visitors")
+
+find_cell(:row => "June 2011", :column => "Visitors")   # JS script is always executed outside static_page block
+find_cell(:row => "July 2011", :column => "Page views") # JS script is always executed outside static_page block
 ```
 
 ## License
