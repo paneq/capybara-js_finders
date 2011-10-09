@@ -32,6 +32,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "capybara", "~> 1.0"
+  s.add_dependency "activesupport", "~> 3.0.10"
+
   s.add_development_dependency "rake", "~> 0.9.0"
   s.add_development_dependency "rdoc", ">= 2.4.2"
   s.add_development_dependency "sinatra", "~> 1.2.6"
@@ -39,6 +41,5 @@ Gem::Specification.new do |s|
   #s.add_development_dependency "bbq", "~> 0.0.3"
   s.add_development_dependency "redcarpet", "~> 1.17"
   s.add_development_dependency "ruby-debug19"
-  s.add_development_dependency "activesupport", "~> 3.0.10"
   s.add_development_dependency "i18n"
 end
