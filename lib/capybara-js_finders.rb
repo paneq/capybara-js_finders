@@ -1,5 +1,6 @@
 require "capybara-js_finders/version"
 require "capybara-js_finders/xpath_extensions"
+require "active_support/core_ext/array"
 
 module Capybara
 
